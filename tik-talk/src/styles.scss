@@ -1,0 +1,107 @@
+@import "fonts";
+
+:root {
+  --dark-color: #000000;
+  --light-color: #ffffff;
+  --primary: #ae7aff;
+  --grey: #5f646d;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  font-family: "JetBrains Mono", sans-serif;
+  background-image: url(/assets/images/background.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.skill-tag {
+  padding: 0 8px;
+  border: 1px solid var(--light-color);
+  border-radius: 4px;
+  display: inline;
+  font-style: 12px;
+  font-weight: 700;
+  height: 24px;
+}
+
+.skill-tag:last-child {
+  margin-right: 0;
+}
+
+.btn {
+  border: none;
+  background: var(--primary);
+  color: var(--dark-color);
+  padding: 10px 20px;
+  font-weight: 700;
+  font-style: 14px;
+  line-height: 24px;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid var(--dark-color);
+}
+
+.btn-shadow {
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    background: var(--grey);
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    border-radius: 4px;
+  }
+}
+
+.h1 {
+  font-style: 48px;
+  line-height: 56px;
+  font-weight: 800;
+}
+
+.h6 {
+  font-style: 18px;
+  line-height: 24px;
+  font-weight: 800;
+}
+
+.subtitle {
+  font-style: 14px;
+  line-height: 21px;
+  font-weight: 400;
+}
+
+.tt-control-label {
+  font-weight: 700;
+  font-style: 12px;
+  line-height: 16px;
+  display: block;
+}
+
+.tt-input {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--light-color);
+  border-radius: 4px;
+  padding: 12px 20px;
+  margin-top: 8px;
+  color: var(--light-color);
+  background: var(--dark-color);
+  font-weight: 400;
+  line-height: 21px;
+  font-style: 14px;
+  font-family: "JetBrains Mono", sans-serif;
+  outline: none;
+}
