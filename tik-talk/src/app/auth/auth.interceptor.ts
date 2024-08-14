@@ -5,7 +5,9 @@ import {
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from './auth.service';
-import { catchError, throwError } from 'rxjs';
+import { catchError, switchMap, throwError } from 'rxjs';
+
+let isRefreshing = false;
 
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -13,16 +15,14 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
 
   if (!token) return next(req);
 
-  req = req.clone({
-    setHeaders: {
-      Authorization: 'Bearer ' + token,
-    },
-  });
+  if (isRefreshing) {
+    return refreshAndProceed(authService, req, next);
+  }
 
-  return next(req).pipe(
+  return next(addToken(req, token)).pipe(
     catchError((error) => {
-      if (error.status == 405) {
-        return refreshAndProceed(AuthService, req, next);
+      if (error.status == 403) {
+        return refreshAndProceed(authService, req, next);
       }
 
       return throwError(() => new Error('error'));
@@ -34,4 +34,25 @@ const refreshAndProceed = (
   service: AuthService,
   req: HttpRequest<any>,
   next: HttpHandlerFn
-) => {};
+) => {
+  if (!isRefreshing) {
+    isRefreshing = true;
+
+    return service.refreshAuthToken().pipe(
+      switchMap((res) => {
+        isRefreshing = false;
+        return next(addToken(req, res.access_token));
+      })
+    );
+  }
+
+  return next(addToken(req, service.token!));
+};
+
+const addToken = (req: HttpRequest<any>, token: string) => {
+  return (req = req.clone({
+    setHeaders: {
+      Authorization: 'Bearer ' + token,
+    },
+  }));
+};
