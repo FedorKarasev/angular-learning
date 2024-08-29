@@ -1,0 +1,10 @@
+:root {
+  --width: 1000px;
+  --height: 650px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
